@@ -1,11 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, input, output } from '@angular/core';
-
-interface UserVm {
-  id: number;
-  name: string;
-  email: string;
-}
+import { User } from '../../../domain';
 
 @Component({
   selector: 'arch-users-list',
@@ -60,7 +55,7 @@ interface UserVm {
   ],
 })
 export class UsersListComponent {
-  users = input.required<UserVm[]>();
+  users = input.required<User[]>();
   selectedUserId = input<number | null>(null);
 
   selectUser = output<number>();

@@ -2,43 +2,48 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { UsersListComponent } from '../ui/users-list.component';
 import { UserStore } from '../stores/users.store';
 import { UsersFiltersStore } from '../stores/users-filters.store';
+import { ArchCardComponent } from '../../../shared';
 
 @Component({
   selector: 'arch-users-page',
-  imports: [UsersListComponent],
+  imports: [UsersListComponent, ArchCardComponent],
   providers: [UsersFiltersStore],
   template: `
     <section>
       <header class="page-header">
         <h2>Users</h2>
-        <p>Feature-based + ViewModel pattern demo</p>
+        <p>Feature-based + ViewModel pattern + component store demo</p>
       </header>
+      <arch-card [title]="'Users list'" [subtitle]="'Feature store + component store + smart/dumb'">
+        <div class="toolbar">
+          <label>
+            Search:
+            <input
+              type="text"
+              [value]="vm().search"
+              (input)="onSearchChange($any($event.target).value)"
+              placeholder="Filter by name or email"
+            />
+          </label>
 
-      <div class="toolbar">
-        <label>
-          Search:
-          <input
-            type="text"
-            [value]="vm().search"
-            (input)="onSearchChange($any($event.target).value)"
-            placeholder="Filter by name or email"
-          />
-        </label>
+          <button type="button" (click)="onClearSearch()">Clear</button>
+        </div>
 
-        <button type="button" (click)="onClearSearch()">Clear</button>
-      </div>
-
-      @if (vm().isLoading) {
-      <p>Cargando Usuarios...</p>
-      } @else if(vm().error) {
-      <p class="error">{{ vm().error }}</p>
-      }@else {
-      <arch-users-list
-        [users]="vm().users"
-        [selectedUserId]="vm().selectedUserId"
-        (selectUser)="onSelectUser($event)"
-      ></arch-users-list>
-      }
+        @if (vm().isLoading) {
+        <p>Cargando Usuarios...</p>
+        } @else if(vm().error) {
+        <p class="error">{{ vm().error }}</p>
+        }@else {
+        <arch-users-list
+          [users]="vm().users"
+          [selectedUserId]="vm().selectedUserId"
+          (selectUser)="onSelectUser($event)"
+        ></arch-users-list>
+        }
+        <div card-footer>
+          <span>Total: {{ vm().users.length }} users</span>
+        </div>
+      </arch-card>
     </section>
   `,
   styles: [
