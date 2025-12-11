@@ -1,5 +1,6 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { UsersListComponent } from '../ui/users-list.component';
+import { UserStore } from '../users.store';
 
 interface UserVm {
   id: number;
@@ -17,7 +18,17 @@ interface UserVm {
         <p>Feature-based + ViewModel pattern demo</p>
       </header>
 
-      <arch-users-list [users]="vm().users"></arch-users-list>
+      @if (vm().isLoading) {
+      <p>Cargando Usuarios...</p>
+      } @else if(vm().error) {
+      <p class="error">{{ vm().error }}</p>
+      }@else {
+      <arch-users-list
+        [users]="vm().users"
+        [selectedUserId]="vm().selectedUserId"
+        (selectUser)="onSelectUser($event)"
+      ></arch-users-list>
+      }
     </section>
   `,
   styles: [
@@ -25,17 +36,28 @@ interface UserVm {
       .page-header {
         margin-bottom: 1rem;
       }
+      .error {
+        color: #ff6b6b;
+        margin-bottom: 0.75rem;
+      }
     `,
   ],
 })
 export class UsersPageComponent {
-  private readonly users = signal<UserVm[]>([
-    { id: 1, name: 'Ada Lovelace', email: 'ada@example.com' },
-    { id: 2, name: 'Alan Turing', email: 'alan@example.com' },
-    { id: 3, name: 'Grace Hopper', email: 'grace@example.com' },
-  ]);
+  private readonly usersStore = inject(UserStore);
+
+  constructor() {
+    this.usersStore.loadUsers();
+  }
 
   readonly vm = computed(() => ({
-    users: this.users(),
+    users: this.usersStore.users(),
+    isLoading: this.usersStore.loading(),
+    error: this.usersStore.error(),
+    selectedUserId: this.usersStore.selectedUserId(),
   }));
+
+  onSelectUser(id: number) {
+    this.usersStore.selectUser(id);
+  }
 }

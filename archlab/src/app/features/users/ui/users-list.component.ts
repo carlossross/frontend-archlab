@@ -1,4 +1,5 @@
-import { Component, input } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { Component, input, output } from '@angular/core';
 
 interface UserVm {
   id: number;
@@ -8,7 +9,7 @@ interface UserVm {
 
 @Component({
   selector: 'arch-users-list',
-  imports: [],
+  imports: [NgClass],
   template: `
     <table class="users-table">
       <thead>
@@ -21,7 +22,10 @@ interface UserVm {
 
       <tbody>
         @for (user of users(); track user.id) {
-        <tr>
+        <tr
+          [ngClass]="{ 'is-selected': user.id === selectedUserId() }"
+          (click)="onRowClick(user.id)"
+        >
           <td>{{ user.id }}</td>
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
@@ -45,9 +49,23 @@ interface UserVm {
       .users-table thead tr {
         background: rgba(255, 255, 255, 0.04);
       }
+      .users-table tr {
+        cursor: pointer;
+      }
+      .users-table tr.is-selected {
+        background: rgba(255, 255, 255, 0.06);
+        font-weight: 600;
+      }
     `,
   ],
 })
 export class UsersListComponent {
   users = input.required<UserVm[]>();
+  selectedUserId = input<number | null>(null);
+
+  selectUser = output<number>();
+
+  onRowClick(id: number) {
+    this.selectUser.emit(id);
+  }
 }
