@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { UsersListComponent } from '../ui/users-list.component';
-import { UserStore } from '../stores/users.store';
+import { UsersStore } from '../stores/users.store';
 import { UsersFiltersStore } from '../stores/users-filters.store';
 import { ArchCardComponent } from '../../../shared';
 
@@ -69,7 +69,7 @@ import { ArchCardComponent } from '../../../shared';
   ],
 })
 export class UsersPageComponent {
-  private readonly usersStore = inject(UserStore);
+  private readonly usersStore = inject(UsersStore);
   private readonly filtersStore = inject(UsersFiltersStore);
 
   constructor() {

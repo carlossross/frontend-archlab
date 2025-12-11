@@ -10,7 +10,7 @@ const MOCK_USERS_DTO: UserDto[] = [
 @Injectable({
   providedIn: 'root',
 })
-export class UserStore {
+export class UsersStore {
   // Domain state
   private readonly _users = signal<User[]>([]);
   private readonly _selectedUserId = signal<number | null>(null);
