@@ -1,5 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { mapUsersDtoToUsers, User, UserDto } from '../../domain';
+import { mapUsersDtoToUsers, User, UserDto } from '../../../domain';
 
 const MOCK_USERS_DTO: UserDto[] = [
   { id: 1, full_name: 'Ada Lovelace', email_address: 'ada@example.com' },
