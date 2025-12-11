@@ -9,9 +9,9 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
       <aside class="sidebar">
         <h1 class="logo">ArchLab</h1>
         <nav class="nav">
-          <a routerLink="/dashboard" routerLinkActive="active"></a>
-          <a routerLink="/users" routerLinkActive="active"></a>
-          <a routerLink="/sales" routerLinkActive="active"></a>
+          <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+          <a routerLink="/users" routerLinkActive="active">Users</a>
+          <a routerLink="/sales" routerLinkActive="active">Sales</a>
         </nav>
       </aside>
 
